@@ -5,12 +5,15 @@
     <title>Please Login</title>
 </head>
 <body>
-<form th:action="@{/login}" method="post">
-    <label for="username">Username</label>
-    <input type="text" id="username" name="username">
-    <label for="password">Password</label>
-    <input type="text" id="password" name="password">
-    <input type="submit" value="Login">
+<!--/*@thymesVar id="user" type="com.miloraddjordjevic.ecommerce.entities.User"*/-->
+<form th:action="@{/login}" th:object="${user}" method="POST">
+    <label>
+        <input type="text" th:field="*{username}" th:name="username"/>
+    </label>
+    <label>
+        <input type="text" th:field="*{password}" th:name="password"/>
+    </label>
+    <input type="submit" value="Submit"/>
 </form>
 </body>
 </html>

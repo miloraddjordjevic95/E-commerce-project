@@ -27,15 +27,16 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         ) {
             if (u.getUsername().equals(s)) {
                 user = u;
-                System.out.println(user);
                 break;
             }
         }
+
         if (user == null) {
             throw new UsernameNotFoundException("User with this username wasn't found!");
         } else {
             List<GrantedAuthority> authorities = new ArrayList<>();
-            authorities.add(new SimpleGrantedAuthority("USER"));
+            SimpleGrantedAuthority simpleGrantedAuthority = new SimpleGrantedAuthority("USER");
+            authorities.add(simpleGrantedAuthority);
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
         }
     }

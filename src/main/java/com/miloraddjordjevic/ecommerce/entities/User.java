@@ -17,6 +17,8 @@ public class User {
     private String username;
     @Column (name = "password")
     private String password;
+    @Column (name = "role_id")
+    private int role_id;
 
     public User() {
     }
@@ -51,6 +53,14 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public int getRole_id() {
+        return role_id;
+    }
+
+    public void setRole_id(int role_id) {
+        this.role_id = role_id;
     }
 
     @Override

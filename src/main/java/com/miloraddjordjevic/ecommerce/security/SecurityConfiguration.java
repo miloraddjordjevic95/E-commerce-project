@@ -54,11 +54,16 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
+                .filterSecurityInterceptorOncePerRequest(false)
+                .antMatchers("/login")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .formLogin()
-                .loginPage("/login")
+                .loginProcessingUrl("/login")
+                .successForwardUrl("/index")
+                .failureForwardUrl("/bad_login")
                 .permitAll();
         httpSecurity.addFilterBefore(authenticationTokenFilterBean(),
                 UsernamePasswordAuthenticationFilter.class);
