@@ -8,9 +8,9 @@ import javax.persistence.*;
 @Table (name = "korisnici")
 public class User {
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
+    @GeneratedValue (strategy = GenerationType.AUTO)
     @Column (name = "id")
-    private int id;
+    private long id;
     @Column (name = "email")
     private String email;
     @Column (name = "username")
@@ -18,16 +18,16 @@ public class User {
     @Column (name = "password")
     private String password;
     @Column (name = "role_id")
-    private int role_id;
+    private long role_id;
 
     public User() {
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -55,17 +55,11 @@ public class User {
         this.password = password;
     }
 
-    public int getRole_id() {
+    public long getRole_id() {
         return role_id;
     }
 
-    public void setRole_id(int role_id) {
+    public void setRole_id(long role_id) {
         this.role_id = role_id;
-    }
-
-    @Override
-    public String toString() {
-        String str = this.username + " " + this.password;
-        return str;
     }
 }

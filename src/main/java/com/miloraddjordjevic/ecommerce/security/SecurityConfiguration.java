@@ -18,12 +18,15 @@ import org.springframework.stereotype.Component;
 @Component
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableGlobalMethodSecurity (prePostEnabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Autowired
     private UserDetailsServiceImpl userDetailsService;
+
     @Autowired
-    public void configureAuthentication(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+    public void configureAuthentication(
+                                         AuthenticationManagerBuilder authenticationManagerBuilder)
+            throws Exception {
 
         authenticationManagerBuilder
                 .userDetailsService(this.userDetailsService).passwordEncoder(
@@ -54,14 +57,15 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .authorizeRequests()
-                .filterSecurityInterceptorOncePerRequest(false)
-                .antMatchers("/login")
-                .permitAll()
-                .anyRequest()
-                .authenticated()
+                .antMatchers("/home").permitAll()
+                .antMatchers("/profile").authenticated()
+                .antMatchers("/admin").hasRole("ADMIN")
                 .and()
                 .formLogin()
-                .loginProcessingUrl("/login")
+                .loginPage("/login")
+                .loginProcessingUrl("/loginUser")
+                .usernameParameter("username")
+                .passwordParameter("password")
                 .successForwardUrl("/index")
                 .failureForwardUrl("/bad_login")
                 .permitAll();
