@@ -26,18 +26,18 @@ public class LoginController {
     @Autowired
     private AuthenticationManager authenticationManager;
 
-    @RequestMapping (value = "/loginUser", method = RequestMethod.GET)
+    @RequestMapping (value = "/login", method = RequestMethod.GET)
+    public String loginPage() {
+        return "login";
+    }
+
+    @RequestMapping (value = "/loginUser", method = RequestMethod.POST)
     public ResponseEntity<String> loginUser (@RequestParam (name = "username") String username, @RequestParam (name = "password") String password) {
         UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(username, password);
         Authentication authentication = authenticationManager.authenticate(token);
         SecurityContextHolder.getContext().setAuthentication(authentication);
         UserDetails userDetails = userDetailsService.loadUserByUsername(username);
         return new ResponseEntity<>(tokenUtils.generateToken(userDetails), HttpStatus.OK);
-    }
-
-    @RequestMapping (value = "/login", method = RequestMethod.GET)
-    public String loginPage() {
-        return "login";
     }
 
     @RequestMapping (value = "/bad_login")
