@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Component
 @Entity
-@Table (name = "korisnici")
+@Table (name = "users")
 public class User {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
@@ -17,11 +17,9 @@ public class User {
     private String username;
     @Column (name = "password")
     private String password;
-//    @Column (name = "role_id")
-//    private long role_id;
-
-    public User() {
-    }
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "roles_id", referencedColumnName = "id")
+    private Roles roles;
 
     public long getId() {
         return id;
@@ -55,11 +53,11 @@ public class User {
         this.password = password;
     }
 
-//    public long getRole_id() {
-//        return role_id;
-//    }
-//
-//    public void setRole_id(long role_id) {
-//        this.role_id = role_id;
-//    }
+    public Roles getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Roles roles) {
+        this.roles = roles;
+    }
 }

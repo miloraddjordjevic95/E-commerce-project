@@ -3,15 +3,11 @@ package com.miloraddjordjevic.ecommerce.services;
 import com.miloraddjordjevic.ecommerce.entities.User;
 import com.miloraddjordjevic.ecommerce.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @Service
@@ -30,16 +26,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 break;
             }
         }
-
         if (user == null) {
             throw new UsernameNotFoundException("User with this username wasn't found!");
         } else {
-            List<GrantedAuthority> authorities = new ArrayList<>();
-            SimpleGrantedAuthority user_authority = new SimpleGrantedAuthority("ROLE_USER");
-            SimpleGrantedAuthority admin_authority = new SimpleGrantedAuthority("ROLE_ADMIN");
-            authorities.add(user_authority);
-            authorities.add(admin_authority);
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+            com.miloraddjordjevic.ecommerce.entities.UserDetails userDetails = new com.miloraddjordjevic.ecommerce.entities.UserDetails(user);
+            org.springframework.security.core.userdetails.User u = new org.springframework.security.core.userdetails.User(userDetails.getUsername(), userDetails.getPassword(), userDetails.isEnabled(),
+                    userDetails.isAccountNonExpired(), userDetails.isCredentialsNonExpired(), userDetails.isAccountNonLocked(), userDetails.getAuthorities());
+            return u;
         }
     }
 }
